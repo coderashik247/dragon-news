@@ -19,7 +19,7 @@ const MainLayouts = () => {
                 </section>
             </header>
 
-            <main className='grid grid-cols-12  w-11/12 mx-auto'>
+            <main className='grid grid-cols-12 gap-5 w-11/12 mx-auto'>
                 <aside className='col-span-3'>
                     <LeftAside></LeftAside>
                 </aside>
