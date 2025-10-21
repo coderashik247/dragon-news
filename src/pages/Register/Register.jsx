@@ -1,25 +1,43 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router';
+import React, { useContext, useState } from "react";
+import { Link } from "react-router";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Register = () => {
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+  const [nameError, setNameError] = useState("");
 
-    const [nameError, setNameError] = useState('');
+  const { createUser } = useContext(AuthContext);
 
-    const handleRegister = (event) =>{
-        event.preventDefault();
-        const form = event.target;
-        const name = form.name.value;
-        if(name.length < 5){
-            setNameError("Name should be more than 5 character");
-            return;
-        }
-        const photo = form.photo.value;
-        const email = form.email.value;
-        const password = form.password.value;
-        console.log(name, photo,email, password);
+  const handleRegister = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const name = form.name.value;
+    if (name.length < 5) {
+      setNameError("Name should be more than 5 character");
+      return;
     }
-    return (
- <div className="flex justify-center min-h-screen items-center">
+    const photo = form.photo.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(name, photo, email, password);
+
+    // reset handle
+    setSuccess(false);
+
+    createUser(email, password)
+      .then((result) => {
+        console.log(result.user);
+        setSuccess(true);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        setError(errorCode);
+        console.log(errorCode);
+      });
+  };
+  return (
+    <div className="flex justify-center min-h-screen items-center">
       <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl py-5">
         <h2 className="font-semibold text-2xl text-center">
           Register your account
@@ -72,16 +90,20 @@ const Register = () => {
               Register
             </button>
             <p className="font-semibold text-center pt-5">
-              Allready Have An Account ?{" "}
+              Already Have An Account ?{" "}
               <Link className="text-secondary" to="/auth/login">
                 Login
               </Link>
             </p>
           </fieldset>
+          {success && <p className="text-green-400">Register successful</p>}
+          {
+            error && <p className="text-red-400"> {error} </p>
+          }
         </form>
       </div>
     </div>
-    );
+  );
 };
 
 export default Register;

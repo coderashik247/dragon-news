@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, {useContext, useState } from 'react';
 import { Link } from 'react-router';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const Login = () => {
     const [error, setError] = useState('');
+    const {setUser ,signInUser} = useContext(AuthContext);
 
     const handleLogin = (event) => {
         event.preventDefault();
@@ -12,7 +14,17 @@ const Login = () => {
         console.log(email, password);
 
         // reset status
-        setError(" ");
+        // setError(" ");
+
+        signInUser(email,password)
+        .then(result => {
+          console.log(result.user)
+          setUser(result.user);
+        })
+        .catch(error =>{
+          const errorCode = error.code;
+          setError(errorCode);
+        })
     }
     return (
         <div className="flex justify-center min-h-screen items-center">
