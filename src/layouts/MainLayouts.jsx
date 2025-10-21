@@ -3,10 +3,12 @@ import Header from '../components/Header/Header';
 import LatestNews from '../components/LatestNews/LatestNews';
 import Navbar from '../components/Navbar/Navbar';
 import LeftAside from '../components/HomeLayouts/LeftAside';
-import { Outlet } from 'react-router';
+import { Outlet, useNavigation } from 'react-router';
 import RightAside from '../components/HomeLayouts/RightAside';
+import Loading from '../components/Loading/Loading';
 
 const MainLayouts = () => {
+    const {state} = useNavigation();
     return (
         <div>
             <header>
@@ -24,7 +26,7 @@ const MainLayouts = () => {
                     <LeftAside></LeftAside>
                 </aside>
                 <section className='main col-span-6'>
-                    <Outlet></Outlet>
+                   {state==="loading"? <Loading></Loading>: <Outlet></Outlet>} 
                 </section>
                 <aside className='col-span-3'>
                     <RightAside></RightAside>
